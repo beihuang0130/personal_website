@@ -5,8 +5,8 @@ const personalData = {
     // 基本信息
     name: "黄琲",
     title: "AI产品经理",
-    bio: "专注于 AI 赋能业务流优化、人机协同 AIBD 以及提效工具开发。曾在美团实习，负责多项 AI 落地项目。",
-    aboutText: "你好！我是黄琲。我热衷于利用人工智能技术解决现实业务中的痛点。",
+    bio: "专注于 AI 赋能业务流优化、人机协同 AIBD 以及提效工具开发。曾在美团实习，负责多项 AI 落地项目，致力于将生成式 AI 技术转化为实际生产力。",
+    aboutText: "你好！我是黄琲。...", // 这部分已在HTML中硬编码，JS仅作备用
 
     // 联系信息
     email: "huangbei937@gmail.com",
@@ -29,7 +29,7 @@ const personalData = {
         { name: "项目管理", icon: "📋", level: 85 }
     ],
 
-    // 实习经历项目
+    // 工作经历项目
     internshipProjects: [
         {
             name: "销售工具：代报名助手",
@@ -46,13 +46,15 @@ const personalData = {
             tags: ["ai-bd"],
             tagNames: ["人机协同与 AIBD", "商业化落地"],
             description: "为支撑美团会员长期权益在中小城市的下沉策略（覆盖 KTV/丽人等高价值 L4-L6 用户），负责智能外呼机器人（Mbot v0.1）的落地与业务侧对齐。针对复杂的招商话术场景，完成了 Bot 的语义调优与评测优化，确保业务侧人评无异议。虽受限于系统排期，但成功验证了 AI 在复杂权益招商场景下的可行性，为后续自动化招商奠定了产品基石。",
-            materials: []
+            materials: [
+                { type: "video", path: "文件夹相关内容/美团会员招商.mp4", name: "演示视频" }
+            ]
         },
         {
             name: "数据分析助手（销售行为分析）",
             tags: ["data-insight"],
             tagNames: ["数据洞察与决策", "个性化推荐"],
-            description: "为解决销售团队缺乏精细化复盘工具的痛点，开发了一套支持\"千人千面\"行为分析的数据助手工作流。该系统通过清洗和聚合多维度业务数据，支持从\"6级/7级组织\"到\"单兵个人\"的三个维度下钻分析。目前已成功上线并应用于月度复盘会议，帮助管理者精准定位销售动作偏差，实现了管理决策从\"凭经验\"到\"看数据\"的转型。",
+            description: "为解决销售团队缺乏精细化复盘工具的痛点，开发了一套支持\"千人千面\"行为分析的数据助手工作流。该系统通过清洗和聚合多维度业务数据，支持从\"3级到7级组织\"再到\"单兵个人\"的三个维度下钻分析。目前已成功上线并应用于月度复盘会议，帮助管理者精准定位销售动作偏差，实现了管理决策从\"凭经验\"到\"看数据\"的转型。",
             materials: [
                 { type: "video", path: "文件夹相关内容/数据分析助手.mp4", name: "演示视频" }
             ]
@@ -72,7 +74,8 @@ const personalData = {
             tagNames: ["AI 提效工具与插件", "规则引擎"],
             description: "针对销售在多个系统间切换查询（平均单店耗时 5 分钟）的痛点，设计并推广了一款集成式 Chrome 插件。该工具内嵌规则引擎，能实时分析目标门店数据，自动匹配供给任务并生成个性化沟通建议。上线后覆盖率达 91%，单店作业时长从 5 分钟缩短至 3 分钟（提效 40%），按单人日均外呼 45 家计算，每日为单名销售节约 90 分钟，极大提升了作业人效。",
             materials: [
-                { type: "video", path: "文件夹相关内容/插件-演示视频.mp4", name: "演示视频" }
+                { type: "video", path: "文件夹相关内容/插件-演示视频.mp4", name: "演示视频" },
+                { type: "video", path: "文件夹相关内容/插件使用统计.mp4", name: "使用统计" }
             ]
         },
         {
@@ -194,7 +197,7 @@ function populateData() {
     document.getElementById('userName').textContent = personalData.name;
     document.getElementById('userTitle').textContent = personalData.title;
     document.getElementById('userBio').textContent = personalData.bio;
-    document.getElementById('aboutText').textContent = personalData.aboutText;
+    // document.getElementById('aboutText').textContent = personalData.aboutText;
     document.getElementById('footerName').textContent = personalData.name;
 
     // 填充联系信息
@@ -204,7 +207,8 @@ function populateData() {
     document.getElementById('contactLocation').textContent = personalData.location;
 
     // 填充社交链接
-    document.getElementById('emailLink').href = personalData.social.email;
+    // 社交链接已移除，不再填充
+    // document.getElementById('emailLink').href = personalData.social.email;
 
     // 填充当前年份
     document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -441,29 +445,35 @@ function openVideoModal(videoPath) {
     }, 10);
 }
 
-// 填充技能卡片
+// 填充技能列表
 function populateSkills() {
     const skillsGrid = document.getElementById('skillsGrid');
-    skillsGrid.innerHTML = ''; // 清空示例内容
+    if (!skillsGrid) return;
+
+    skillsGrid.innerHTML = ''; // 清空内容
 
     personalData.skills.forEach((skill, index) => {
-        const skillCard = document.createElement('div');
-        skillCard.className = 'skill-card glass-card';
-        skillCard.style.animationDelay = `${index * 0.1}s`;
+        const skillItem = document.createElement('div');
+        skillItem.className = 'skill-item';
+        skillItem.style.animationDelay = `${index * 0.1}s`;
 
-        skillCard.innerHTML = `
-            <div class="skill-icon">${skill.icon}</div>
-            <h3>${skill.name}</h3>
+        skillItem.innerHTML = `
+            <div class="skill-info">
+                <span class="skill-name">
+                    <span class="skill-icon-mini">${skill.icon}</span>
+                    ${skill.name}
+                </span>
+                <span class="skill-percent">${skill.level}%</span>
+            </div>
             <div class="skill-bar">
                 <div class="skill-progress" data-progress="${skill.level}"></div>
             </div>
-            <span class="skill-percent">${skill.level}%</span>
         `;
 
-        skillsGrid.appendChild(skillCard);
+        skillsGrid.appendChild(skillItem);
     });
 
-    // 技能条动画
+    // 重新启动进度条观察
     observeSkills();
 }
 
@@ -545,19 +555,21 @@ const observeSkills = () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const progressBar = entry.target.querySelector('.skill-progress');
-                const progress = progressBar.getAttribute('data-progress');
-                setTimeout(() => {
-                    progressBar.style.width = `${progress}%`;
-                }, 200);
+                if (progressBar) {
+                    const progress = progressBar.getAttribute('data-progress');
+                    setTimeout(() => {
+                        progressBar.style.width = `${progress}%`;
+                    }, 200);
+                }
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.5
+        threshold: 0.2
     });
 
-    document.querySelectorAll('.skill-card').forEach(card => {
-        observer.observe(card);
+    document.querySelectorAll('.skill-item').forEach(item => {
+        observer.observe(item);
     });
 };
 
@@ -661,7 +673,7 @@ window.addEventListener('scroll', debounce(() => {
     // 滚动相关的优化处理
 }, 100));
 
-// ==================== 实习经历筛选功能 ====================
+// ==================== 工作经历筛选功能 ====================
 function initInternshipFilter() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const internshipCards = document.querySelectorAll('.internship-card');
@@ -679,21 +691,28 @@ function initInternshipFilter() {
 
             internshipCards.forEach(card => {
                 const cardTags = card.getAttribute('data-tags');
+                const isMatch = filter === 'all' || cardTags.includes(filter);
 
-                if (filter === 'all' || cardTags.includes(filter)) {
-                    // 显示卡片
+                if (isMatch) {
+                    // 显示匹配的卡片
                     card.classList.remove('hidden');
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, 10);
+                    // 强制重绘以触发动画
+                    card.offsetHeight;
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                    card.style.filter = 'blur(0)';
                 } else {
-                    // 隐藏卡片
+                    // 隐藏不匹配的卡片
                     card.style.opacity = '0';
-                    card.style.transform = 'scale(0.8)';
+                    card.style.transform = 'scale(0.9)';
+                    card.style.filter = 'blur(4px)';
+
+                    // 等待动画结束后再彻底隐藏占位
                     setTimeout(() => {
-                        card.classList.add('hidden');
-                    }, 300);
+                        if (!card.classList.contains('active-fade')) { // 防止筛选过快导致的冲突
+                            card.classList.add('hidden');
+                        }
+                    }, 400);
                 }
             });
         });

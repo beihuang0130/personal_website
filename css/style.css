@@ -15,10 +15,10 @@
 
     /* 间距和尺寸 */
     --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 2rem;
-    --spacing-lg: 4rem;
-    --spacing-xl: 6rem;
+    --spacing-sm: 0.8rem;
+    --spacing-md: 1.2rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2.5rem;
     --border-radius: 20px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -196,57 +196,127 @@ body {
     transition: var(--transition);
 }
 
-/* ==================== 首页英雄区 ==================== */
+/* ==================== 首页英雄区 (左右排版) ==================== */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: var(--spacing-lg) var(--spacing-md);
-    position: relative;
-    overflow: hidden;
+    padding-top: 80px;
+    background: radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
 }
 
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-    animation: fadeInUp 1s ease-out;
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
 }
 
-@keyframes fadeInUp {
+.hero-text-side {
+    flex: 1.2;
+    text-align: left;
+    animation: fadeInRight 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-image-side {
+    flex: 0.8;
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeInLeft 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes fadeInRight {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateX(-30px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
-.avatar-container {
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.avatar-wrapper {
     position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto var(--spacing-md);
+    width: 320px;
+    height: 320px;
 }
 
 .avatar,
 .avatar-placeholder {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 4px solid transparent;
-    background: var(--accent-gradient);
-    background-clip: padding-box;
-    animation: float 3s ease-in-out infinite;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    /* 有机形状 */
+    object-fit: cover;
+    border: 3px solid var(--accent-primary);
+    background: var(--glass-bg);
+    position: relative;
+    z-index: 2;
+    animation: blob 8s linear infinite;
 }
 
-.avatar {
-    object-fit: cover;
-    padding: 4px;
-    display: none;
+@keyframes blob {
+
+    0%,
+    100% {
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+
+    33% {
+        border-radius: 60% 40% 50% 50% / 50% 40% 60% 50%;
+    }
+
+    66% {
+        border-radius: 50% 50% 40% 60% / 60% 50% 40% 50%;
+    }
+}
+
+.hero-shape-1,
+.hero-shape-2 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 1;
+}
+
+.hero-shape-1 {
+    width: 200px;
+    height: 200px;
+    background: rgba(99, 102, 241, 0.2);
+    top: -20px;
+    right: -20px;
+}
+
+.hero-shape-2 {
+    width: 150px;
+    height: 150px;
+    background: rgba(139, 92, 246, 0.2);
+    bottom: -10px;
+    left: -10px;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-placeholder svg {
+    color: var(--text-secondary);
 }
 
 .avatar.loaded {
@@ -257,17 +327,6 @@ body {
     display: none;
 }
 
-.avatar-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-}
-
-.avatar-placeholder svg {
-    color: var(--text-secondary);
-}
 
 @keyframes float {
 
@@ -282,9 +341,9 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
     font-weight: 700;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .greeting {
@@ -304,7 +363,7 @@ body {
 }
 
 .hero-subtitle {
-    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     color: var(--text-secondary);
     margin-bottom: var(--spacing-md);
 }
@@ -314,14 +373,12 @@ body {
     color: var(--text-secondary);
     margin-bottom: var(--spacing-md);
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .hero-buttons {
     display: flex;
     gap: var(--spacing-sm);
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     margin-bottom: var(--spacing-md);
 }
@@ -361,7 +418,7 @@ body {
 .social-links {
     display: flex;
     gap: var(--spacing-sm);
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .social-link {
@@ -428,7 +485,8 @@ body {
 /* ==================== 通用区块样式 ==================== */
 .section {
     padding: var(--spacing-xl) var(--spacing-md);
-    min-height: 100vh;
+    min-height: 80vh;
+    /* 减小最小高度，防止强制拉伸过大 */
     display: flex;
     align-items: center;
 }
@@ -440,10 +498,10 @@ body {
 }
 
 .section-title {
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
     font-weight: 700;
     text-align: center;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
     position: relative;
 }
 
@@ -474,60 +532,201 @@ body {
 }
 
 /* ==================== 关于我区域 ==================== */
-.about-content {
-    max-width: 800px;
-    margin: 0 auto;
+.about-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--spacing-md);
+    align-items: stretch;
+    /* 强制等高 */
 }
 
-.about-content .glass-card {
-    font-size: 1.1rem;
-    line-height: 1.8;
+.about-main {
+    padding: var(--spacing-md);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 内容垂直居中 */
+}
+
+.about-text-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    /* 明确控制间距 */
+    justify-content: flex-start;
+    /* 顶部对齐，不自动拉伸 */
+}
+
+.about-text-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0;
+    /* 使用父级 gap */
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-text-content p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+    /* 使用父级 gap */
+}
+
+.about-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    /* 小留白 */
+    /* 移除 margin-top: auto，防止被推到底部 */
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    /* 减小卡片间距 */
+    justify-content: space-between;
+}
+
+.highlight-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1rem;
+    /* 减小内边距 */
+    transition: var(--transition);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 移除 min-height 防止被强制撑高 */
+}
+
+.highlight-card:hover {
+    transform: translateX(10px);
+    border-color: var(--accent-primary);
+}
+
+.highlight-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.highlight-card h4 {
+    margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+.highlight-card p {
+    font-size: 0.9rem;
     color: var(--text-secondary);
 }
 
 /* ==================== 技能区域 ==================== */
-.skills-grid {
+.skills-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-sm) var(--spacing-md);
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.skill-card {
-    text-align: center;
+.skill-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
 }
 
-.skill-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-sm);
+.skill-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-primary);
 }
 
-.skill-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: var(--spacing-sm);
+.skill-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-name {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .skill-bar {
     width: 100%;
-    height: 10px;
+    height: 6px;
     background: var(--bg-secondary);
-    border-radius: 10px;
+    border-radius: 3px;
     overflow: hidden;
-    margin: var(--spacing-sm) 0;
 }
 
 .skill-progress {
     height: 100%;
     background: var(--accent-gradient);
-    border-radius: 10px;
-    transition: width 1s ease-out;
+    width: 0%;
+    transition: width 1s cubic-bezier(0.1, 0.5, 0.2, 1);
 }
 
 .skill-percent {
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
     color: var(--accent-primary);
 }
 
-/* ==================== 实习经历区域 ==================== */
+.skill-icon-mini {
+    font-size: 1.2rem;
+}
+
+/* ==================== 响应式设计更新 ==================== */
+@media (max-width: 992px) {
+    .about-container {
+        grid-template-columns: 1fr;
+    }
+
+    .about-highlights {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .skills-list {
+        grid-template-columns: 1fr;
+    }
+}
+
 .internship-header {
     max-width: 800px;
     margin: 0 auto var(--spacing-lg);
@@ -608,16 +807,15 @@ body {
 .internship-card {
     overflow: hidden;
     padding: 0;
-    transition: var(--transition);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
     cursor: pointer;
+    display: block;
+    /* 确保 display 模式固定 */
 }
 
 .internship-card.hidden {
-    opacity: 0;
-    transform: scale(0.8);
-    height: 0;
-    margin: 0;
-    padding: 0;
+    display: none;
+    /* 完全移除占位 */
 }
 
 /* 卡片头部 */
@@ -1128,8 +1326,29 @@ body {
         transform: rotate(-45deg) translate(7px, -7px);
     }
 
-    .hero {
-        padding: var(--spacing-md) var(--spacing-sm);
+    .hero-container {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .hero-text-side {
+        text-align: center;
+    }
+
+    .hero-buttons,
+    .social-links {
+        justify-content: center;
+    }
+
+    .avatar-wrapper {
+        width: 220px;
+        height: 220px;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .hero-image-side {
+        justify-content: center;
     }
 
     .section {
